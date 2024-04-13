@@ -1,13 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import "./table2.css"
 
 const Table2 = ({data,header1,header2,id1,id2}) => {
     return (
         <main>
             <div className="table-container">
                 <table className="project-table">
-                    <caption><h1>Team Requirements</h1></caption>
+                    <caption></caption>
                     <thead>
                         <tr>
                             <th>{header1}</th>

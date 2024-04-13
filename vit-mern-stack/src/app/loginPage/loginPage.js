@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import Header from "../components/layout/Header.js";
 import Footer from "../components/layout/Footer.js";
 import './loginPage.css';
-import ReduxProvider from "../../store/redux-provider.js";
 import { useAppDispatch } from "../../store/index.js";
 import { login } from "../../store/userSlice.js";
 

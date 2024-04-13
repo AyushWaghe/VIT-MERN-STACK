@@ -10,7 +10,25 @@ const Table4 = ({ tableTitle, header1, header2, header3, data, id1, id2, id3}) =
         //     // Navigating to explore page with project ID as query parameter
         //     router.push(`/myProjects/explore?projectId=${projectId}&status=0`);
         // }
+        
+        if(tableTitle === "Applications"){
+            // const applicationIDs=[];
+            const applicationIDs=[];
+            const roles=[];
+            const index=data.findIndex(it=>it.projectID===projectId);
+            // console.log(data[index].number);
+            // console.log("Data",data[0].applications[0].applierID);
+            for(let i=0; i<data[index].number; i++){
+                applicationIDs[i]=data[index].applications[i].applierID;
+                roles[i]=data[index].applications[i].role;
+            }
+            // console.log(applicationIDs);
+            
+                   // Navigating to explore page with project ID as query parameter 
+            router.push(`/exploreApplication?projectId=${projectId}&applicationIDs=${applicationIDs}&roles=${roles}`);
+        }
     }
+
 
     return (
         <main>

@@ -1,11 +1,9 @@
 // pages/api/createProject.js
-import { connectDB } from '../../../../dbConfig/db.js';
-import Project from '../../../../models/projectSchema.js';
-import Projectcats from '../../../../models/projectCategorySchema.js';
-import Projectdoms from '../../../../models/projectDomainSchema.js';
 import { NextResponse } from "next/server";
+import { connectDB } from '../../../../dbConfig/db.js';
+import { OngoingProject } from '../../../../models/projectSchema.js';
 
-connectDB();
+await connectDB();
 
 async function generateRandomID() {
     const timestamp = new Date().getTime().toString();
@@ -17,43 +15,34 @@ async function generateRandomID() {
 export { generateRandomID };
 
 export async function POST(request, response) {
-    console.log("hiy git tit ");
+    console.log("Request received to create project.");
     const reqBody = await request.json();
-    const {projectName, category, projectDomain,teammates } = reqBody;
+    const { projectName,description, category, projectDomain,requirments} = reqBody; // Added description here
     try {
         // Generate random ID
         const randomID = await generateRandomID();
-        console.log(randomID);
-        const projectID=randomID;
-        const completedStatus=0;
-
-        const projectData={
-          projectID:projectID,
-          projectName:projectName,
-          category:category,
-          projectDomain:projectDomain,
-          completedStatus:completedStatus,
-          teammates:teammates
+        console.log(`Generated Random ID: ${randomID}`);
+        const projectID = randomID;
+        const completedStatus = 0;
+        const teammates=null;
+        const projectData = {
+            projectID: projectID,
+            projectName: projectName,
+            description:description,
+            category: category,
+            projectDomain: projectDomain,
+            requirments:requirments,
+            completedStatus: completedStatus,
+            teammates: teammates,
         }
 
         // Insert project data into 'projects' collection
-        await Project.create(projectData); // Use create method instead of insertOne
+        console.log(projectData);
+        await OngoingProject.create(projectData);
 
-        // Update 'project category' collection
-        await Projectcats.updateOne(
-            { categoryName: category },
-            { $push: { projectIDs: projectID } }
-        );
-
-        // Update 'project domain' collection
-        await Projectdoms.updateOne(
-            { domainName: projectDomain},
-            { $push: { projectIDs: projectID } }
-        );
-
-        return NextResponse.json({ message: 'Project created successfully' }); // Return NextResponse here
+        return NextResponse.json({ message: 'Project created successfully' });
     } catch (error) {
         console.error('MongoDB Error:', error);
-        return NextResponse.json({ message: 'Internal Server Error' }); // Return NextResponse here as well
+        return NextResponse.json({ message: 'Internal Server Error', error: error.message });
     }
 }

@@ -1,8 +1,8 @@
 "use client"
 import React, { useState } from "react";
-import "./findStudents.css";
 import Header from "../../components/layout/Header";
 import Table4 from "../../components/table4/page.js";
+import "./findStudents.css";
 
 const findStudents = () => {
 
@@ -51,7 +51,7 @@ const findStudents = () => {
                 </div>
                 <div className="ContentContainer">
                     <div className="ContainerHeader">
-                        Find Projects
+                        Find Experts
                     </div>
 
 

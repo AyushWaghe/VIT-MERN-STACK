@@ -1,16 +1,16 @@
 // getProject.js
 import { connectDB } from '../../../../dbConfig/db.js';
 import { NextResponse } from "next/server";
-import { OngoingProject, CompletedProject } from '../../../../models/projectSchema.js'; // Import models correctly
+import { OngoingProject, CompletedProject } from '../../../../models/projectSchema.js'; 
 import UserProfile from '../../../../models/userProfileSchema.js';
 
 await connectDB();
 
 export async function GET(req, res) {
     try {
-        const searchParams = new URLSearchParams(req.url.split('?')[1]); // Extract searchParams from req.url
-        const userID = searchParams.get('userID'); // Extract userID from searchParams
-        const status = searchParams.get('status'); // Extract status from searchParams
+        const searchParams = new URLSearchParams(req.url.split('?')[1]);
+        const userID = searchParams.get('userID'); 
+        const status = searchParams.get('status'); 
 
         console.log(userID, status);
         let projectIDs = [];

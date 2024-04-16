@@ -21,7 +21,7 @@ const userSlice = createSlice({
       state.user = {
         userName,
         userPassword,
-        // You can add other user-related properties here if needed
+  
       };
     },
   },

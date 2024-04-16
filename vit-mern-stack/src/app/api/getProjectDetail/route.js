@@ -1,8 +1,7 @@
 // getProject.js
 import { connectDB } from '../../../dbConfig/db.js';
 import { NextResponse } from "next/server";
-import { OngoingProject, CompletedProject } from '../../../models/projectSchema.js'; // Import models correctly
-
+import { OngoingProject, CompletedProject } from '../../../models/projectSchema.js';
 await connectDB();
 
 export async function GET(req, res) {

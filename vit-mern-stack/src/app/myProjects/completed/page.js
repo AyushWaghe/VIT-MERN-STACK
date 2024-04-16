@@ -11,8 +11,8 @@ const Page = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const userID = "65fa7c74728a43221876482f"; // Replace 'yourUserID' with the actual user ID
-                const status = 1; // Change the status value as needed (0 or 1)
+                const userID = "65fa7c74728a43221876482f"; 
+                const status = 1; 
 
                 const response = await fetch(`/api/myprojects/completed?userID=${userID}&status=${status}`);
                 if (!response.ok) {

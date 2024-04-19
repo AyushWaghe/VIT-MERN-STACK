@@ -1,6 +1,5 @@
-import React from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 import "./table5.css";
 
 const Table5 = ({ tableTitle, header1, header2, header3, header4, data, id1, id2, id3, id4 }) => {
@@ -11,6 +10,9 @@ const Table5 = ({ tableTitle, header1, header2, header3, header4, data, id1, id2
             router.push(`/myProjects/explore?projectId=${projectId}&status=0&teammates=1`);
         }else if(tableTitle === "Projects"){
             router.push(`/discoverProjects/exploreDiscovProject?projectId=${projectId}&status=0&teammates=0`);
+        }
+        else if(tableTitle==="Complted Projects"){
+            router.push(`/myProjects/explore?projectId=${projectId}&status=1&teammates=1`)
         }
     }
 

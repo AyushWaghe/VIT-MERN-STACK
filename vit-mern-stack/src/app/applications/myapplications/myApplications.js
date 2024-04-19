@@ -102,11 +102,11 @@ export default function MyApplications() {
                         tableTitle={"My Applications"}
                         header1={"Project ID"}
                         header2={"Project Name"}
-                        header3={"No of Applications"}
+                        header3={"Status"}
                         data={applications}
                         id1={"projectID"}
                         id2={"projectName"}
-                        id3={"number"}
+                        //id3={"number"}
                     />
                     </div>
                 </div>

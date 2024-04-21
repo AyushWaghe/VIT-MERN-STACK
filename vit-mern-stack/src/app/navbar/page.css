@@ -19,9 +19,7 @@
     transform: translateX(0); /* Slide in when open */
 }
   
-.SideNavBarField {
-    /* Your styles for sidebar fields */
-}
+
 
 .mainLink {
     cursor: pointer;

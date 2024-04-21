@@ -21,21 +21,21 @@ export async function POST(request) {
           query.projectID=projectID;
         }
         else if (projectName) {
-            const regexPattern = new RegExp(`${projectName.split('').join('.*')}`, 'i'); // Fix regex creation
+            const regexPattern = new RegExp(`${projectName.split('').join('.*')}`, 'i'); 
             query.projectName = regexPattern;
         } else {
-            // Otherwise, use other fields for filtering
+       
             if (categoryName[0]!='') query.categoryName = { $in: categoryName };
             if (domainName[0] !='') query.domainName = { $in: domainName};
         }
 
-        // Query MongoDB to find matching projects
+        
         let projects = [];
         console.log("query",query);
         if (Object.keys(query).length !== 0) {
-            projects = await OngoingProject.find(query); // Use Project for querying
+            projects = await OngoingProject.find(query); 
         } else {
-            // If no search criteria provided, return all projects
+       
             projects = await OngoingProject.find();
         }
 

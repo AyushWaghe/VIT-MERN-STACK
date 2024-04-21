@@ -36,7 +36,7 @@ export default function explorApplication() {
             const data = await response.json();
             console.log(data);
             setApplicantsNames(data.userNames);
-            // Handle the fetched data as needed
+            
         } catch (error) {
             console.error('Error fetching data:', error);
         }

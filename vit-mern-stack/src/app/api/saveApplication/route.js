@@ -20,11 +20,11 @@ export async function POST(request) {
             projectID: projectId,
             applierID: applierID,
             creatorID: creatorID,
-            role: applyFor, // Assuming applyFor represents the role
+            role: applyFor, 
             coverLetter: coverLetter,
         });
 
-        // Save the new application to the database
+       
         const savedApplication = await newApplication.save();
 
         console.log("Application saved:", savedApplication);

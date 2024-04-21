@@ -32,7 +32,7 @@ export default function NavBar() {
                 <div className="subLinks">
                     <div>Completed</div>
                     <div>Ongoing</div>
-                    {/* Add more subfields as needed */}
+        
                 </div>
             </div>
 
@@ -41,7 +41,7 @@ export default function NavBar() {
                 <div className="subLinks">
                     <div>Host project</div>
                     <div>Find project</div>
-                    {/* Add more subfields as needed */}
+              
                 </div>
             </div>
 
@@ -50,7 +50,7 @@ export default function NavBar() {
                 <div className="subLinks">
                     <div>Find students</div>
                     <div>Find mentors</div>
-                    {/* Add more subfields as needed */}
+                   
                 </div>
             </div>
 
@@ -59,7 +59,7 @@ export default function NavBar() {
                 <div className="subLinks">
                     <div>Applied</div>
                     <div>Received</div>
-                    {/* Add more subfields as needed */}
+               
                 </div>
             </div>
 

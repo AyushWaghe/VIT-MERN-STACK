@@ -7,7 +7,7 @@ await connectDB();
 export async function POST(request) {
     try {
         console.log("FetchingNames");
-        const { applicationIDs } = await request.json(); // Assuming applicationIDs is an array of strings
+        const { applicationIDs } = await request.json(); 
         
         if (!Array.isArray(applicationIDs)) {
             return NextResponse.error(new Error('Invalid application IDs format.'));

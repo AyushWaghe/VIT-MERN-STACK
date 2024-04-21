@@ -15,25 +15,23 @@ export async function POST(request) {
 
       // If userName is provided, perform a combination of text search and regex matching
       if (userName) {
-        const regexPattern = new RegExp(`${userName.split('').join('.*')}`, 'i'); // Fix regex creation
+        const regexPattern = new RegExp(`${userName.split('').join('.*')}`, 'i'); 
         query.userName = regexPattern;
       } else {
-        // Otherwise, use other fields for filtering
-        // if (school) query.school = school;
-        // if (department) query.department = department;
+
         if (school!='') query.school = school;
         if (department!='') query.department = department;
-        if (skills[0]!='') query.skills = { $in: skills}; // Split skills string into an array
+        if (skills[0]!='') query.skills = { $in: skills}; 
       }
 
       console.log(query);
 
-      // Query MongoDB to find matching users
+  
       let users = [];
       if (Object.keys(query).length !== 0) {
         users = await UserProfile.find(query);
       } else {
-        // If no search criteria provided, return all users
+ 
         users = await UserProfile.find();
       }
 

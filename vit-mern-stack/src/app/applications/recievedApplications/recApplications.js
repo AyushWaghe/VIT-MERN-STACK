@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import Header from "../../components/layout/Header";
 import "./recApplications.css";
 import Table4 from "../../components/table4/page.js";
+import { useSelector } from "react-redux";
 
 export default function RecApplications() {
     const [projectNames, setProjectNames] = useState([]);
     const [applications, setApplications] = useState([]);
     const [combinedData, setCombinedData] = useState([]);
-
-    const creatorID = "65fa7c74728a432218764831";
+    const user = useSelector((state) => state.user);
+    const userName = user.user.userName;
+    const creatorID = userName;
 
     // Function to fetch project names based on project IDs
     const fetchProjectNames = async (projectIDs) => {

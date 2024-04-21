@@ -27,7 +27,8 @@ export async function POST(request) {
         const response = NextResponse.json({
             message: "Login successful",
             success: true,
-        })
+            userID: user._id,
+          });
         return response;
 
     } catch (error) {

@@ -67,7 +67,8 @@ export default function explorApplication() {
     const combinedArray = applicantsNames.map((name, index) => {
         return {
             Name: name,
-            Roles: rolesArray[index]
+            Roles: rolesArray[index],
+            applierID:applicationIDsArray[index]
         };
     });
     
@@ -124,6 +125,7 @@ export default function explorApplication() {
                     <div style={{ "textAlign": "center" }}>
                         <h2>Applications</h2>
                         <Table4
+                            tableTitle={"Applicants"}
                             header1={"Name"}
                             header2={"Role"}
                             header3={""}

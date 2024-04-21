@@ -1,22 +1,21 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import Table5 from "../../components/table5/page";
-import './onGoingProjects.css';
+import './CompletedProjects.css';
 import { useSelector } from "react-redux";
 
-const OnGoingProjects = () => {
+const CompletedProject = () => {
     const [projectsData, setProjectsData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const user = useSelector((state) => state.user);
-    const userName = user.user.userName;
+    const userid = user.user.userName;
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log("Fetching data",userName);
-                const userID = userName; // Replace 'yourUserID' with the actual user ID
-                const status = 0; // Change the status value as needed (0 or 1)
+                const userID = userid; // Replace 'yourUserID' with the actual user ID
+                const status = 1; // Change the status value as needed (0 or 1)
 
                 const response = await fetch(`/api/myprojects/completed?userID=${userID}&status=${status}`);
                 if (!response.ok) {
@@ -41,22 +40,22 @@ const OnGoingProjects = () => {
 
     return (
         <div>
-            <h1>{userName}</h1>
-            <Table5
-                key={projectsData.projectID}
-                tableTitle={"On Going Projects"}
-                header1={"Project Title"}
-                header2={"project ID"}
-                header3={"Category"}
-                header4={"Department"}
-                data={projectsData}
-                id1={"projectName"}
-                id2={"projectID"}
-                id3={"categoryName"}
-                id4={"domainName"}
+            <h1>Completed Projects</h1>
+            <Table5 
+            key={projectsData.projectID}
+            tableTitle={"Complted Projects"}
+            header1={"Project Title"}
+            header2={"project ID"}
+            header3={"Category"}
+            header4={"Department"}
+            data={projectsData}
+            id1={"projectName"}
+            id2={"projectID"}
+            id3={"categoryName"}
+            id4={"domainName"}
             />
         </div>
     );
 };
 
-export default OnGoingProjects;
+export default CompletedProject;

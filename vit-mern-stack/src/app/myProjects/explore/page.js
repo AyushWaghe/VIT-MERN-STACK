@@ -68,6 +68,8 @@ const Explore = () => {
         fetchData();
     }, []);
 
+    console.log("TeammateID",projectsData.teammates);
+
     return (
         <div className="ExploreMasterContainer">
             <div className="HeaderContainer">

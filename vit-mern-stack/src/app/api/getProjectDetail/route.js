@@ -20,6 +20,7 @@ export async function GET(req, res) {
             projectsData = await CompletedProject.findOne({ projectID: projectID});
         }
         
+        console.log("Sending data",projectsData);
         return NextResponse.json({ success: true, projectsData }, { status: 200 });
 
     } catch (err) {

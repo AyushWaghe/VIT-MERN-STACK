@@ -6,7 +6,10 @@ import RecApplications from "./recApplications";
 export default function loginPag() {
     return (
         <div>
-            <RecApplications />
+            <ReduxProvider>
+                <RecApplications />
+            </ReduxProvider>
+
         </div>
     )
 }

@@ -7,7 +7,7 @@ import './loginPage.css';
 import { useAppDispatch } from "../../store/index.js";
 import { login } from "../../store/userSlice.js";
 
-export default function LoginPage() {
+const LoginPage=()=> {
 
     const dispatch=useAppDispatch();
 
@@ -31,11 +31,12 @@ export default function LoginPage() {
             });
     
             const data = await response.json();
-            console.log(data);
+            console.log("Sexy ayu",data);
     
             if (data.success) {
 
-                dispatch(login({userName:username}));
+                dispatch(login({userName:data.userID}));
+                console.log("userID is",data.userID);
 
                 console.log("Broyah!!!")
                 router.push('/homePage');
@@ -49,10 +50,9 @@ export default function LoginPage() {
     };
     
 
-    const handleCaptchaSubmit = () => { };
+    // const handleCaptchaSubmit = () => { };
 
     return (
-        <ReduxProvider>
         <div className="Master" style={{}}>
             <div className="header" style={{ "height": "10vh", "width": "100%" }}>
                 <Header />
@@ -137,6 +137,7 @@ export default function LoginPage() {
                 <Footer />
             </div>
         </div>
-        </ReduxProvider>
     )
 }
+
+export default LoginPage;

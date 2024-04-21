@@ -1,12 +1,12 @@
 "use client"
 
 import ReduxProvider from "../../store/redux-provider";
-import LoginPage from "./loginPage";
+import UserInfoPage from "./userinfoPage.js";
 
-export default function loginPag(){
+export default function homepagespotlight(){
     return(
         <ReduxProvider>
-            <LoginPage />
+            <UserInfoPage />
         </ReduxProvider>
     )
 }

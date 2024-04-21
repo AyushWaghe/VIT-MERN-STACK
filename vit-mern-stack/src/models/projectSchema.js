@@ -24,8 +24,7 @@ const projectSchema = new mongoose.Schema({
     type: [
       {
         teammateID: {
-          type: Number,
-          ref: 'Teammate'
+          type: String,
         },
         name:{
           type: String,

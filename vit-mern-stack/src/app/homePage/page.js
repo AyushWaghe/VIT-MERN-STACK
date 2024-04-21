@@ -3,7 +3,7 @@
 import ReduxProvider from "../../store/redux-provider";
 import HomepageSpotlight from "./HomepageSpotlight";
 
-export default function loginPag(){
+export default function homepagespotlight(){
     return(
         <ReduxProvider>
             <HomepageSpotlight />

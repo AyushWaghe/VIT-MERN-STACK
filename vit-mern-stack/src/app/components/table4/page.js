@@ -4,31 +4,27 @@ import { useRouter } from 'next/navigation';
 import "./table4.css";
 
 const Table4 = ({ tableTitle, header1, header2, header3, data, id1, id2, id3}) => {
+    console.log("Combined array ",data);
     const router = useRouter();
-    const handleExploreClick = (projectId) => {
-        // if (tableTitle === "On Going Projects") {
-        //     // Navigating to explore page with project ID as query parameter
-        //     router.push(`/myProjects/explore?projectId=${projectId}&status=0`);
-        // }
-        
-        if(tableTitle === "Applications"){
-            // const applicationIDs=[];
-            const applicationIDs=[];
-            const roles=[];
-            const index=data.findIndex(it=>it.projectID===projectId);
-            // console.log(data[index].number);
-            // console.log("Data",data[0].applications[0].applierID);
-            for(let i=0; i<data[index].number; i++){
-                applicationIDs[i]=data[index].applications[i].applierID;
-                roles[i]=data[index].applications[i].role;
-            }
-            // console.log(applicationIDs);
+    const handleExploreClick = (id) => {
+      
+        if (tableTitle === "Applications") {
             
-                   // Navigating to explore page with project ID as query parameter 
-            router.push(`/exploreApplication?projectId=${projectId}&applicationIDs=${applicationIDs}&roles=${roles}`);
+            const applicationIDs = [];
+            const roles = [];
+            const index = data.findIndex(it => it.projectID === id);
+            // console.log(index);
+            for (let i = 0; i < data[index].number; i++) {
+                applicationIDs[i] = data[index].applications[i].applierID;
+                roles[i] = data[index].applications[i].role;
+            }
+            console.log(roles);
+            router.push(`/exploreApplication?projectId=${id}&applicationIDs=${applicationIDs}&roles=${roles}`);
+            
+        } else{
+            router.push(`/userinfoPage?userID=${id}`);
         }
     }
-
 
     return (
         <main>
@@ -50,8 +46,11 @@ const Table4 = ({ tableTitle, header1, header2, header3, data, id1, id2, id3}) =
                                     <td>{d[id1]}</td>
                                     <td>{d[id2]}</td>
                                     <td>{d[id3]}</td>
-                                    {/* Use the Link component inside the button */}
-                                    <td><button onClick={() => handleExploreClick(d.projectID)}>Explore</button></td>
+                                    <td>
+                                        <button onClick={() => handleExploreClick(tableTitle === "Team Details" ? d[id1] : (tableTitle === "Students" ? d["userID"] : (tableTitle === "Applications" ? d.projectID : (tableTitle==="Applicants" ? d.applierID:null))))}>
+                                            Explore
+                                        </button>
+                                    </td>
                                 </tr>
                             ))
                         ) : (

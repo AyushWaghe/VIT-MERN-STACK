@@ -2,7 +2,6 @@
 import React from 'react';
 import './HomePage.css';
 import Header from './components/layout/Header.js';
-import Footer from './components/layout/Footer.js';
 import { connectDB } from '../dbConfig/db.js'; // Update the path as per your project structure
 
 await connectDB();

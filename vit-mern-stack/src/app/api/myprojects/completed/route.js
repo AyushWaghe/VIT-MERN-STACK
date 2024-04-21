@@ -12,6 +12,8 @@ export async function GET(req, res) {
         const userID = searchParams.get('userID'); // Extract userID from searchParams
         const status = searchParams.get('status'); // Extract status from searchParams
 
+        
+
         console.log(userID, status);
         let projectIDs = [];
 

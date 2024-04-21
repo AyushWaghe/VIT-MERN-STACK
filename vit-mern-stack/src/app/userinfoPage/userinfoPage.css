@@ -1,4 +1,4 @@
-.homePageMasterContainer{
+.userinfoPageMasterContainer{
     margin: -0.6%;
     height: 100vh;
     /* background-color: red; */
@@ -13,9 +13,11 @@
     width: 99%;
     border-radius: 3px;
     margin-left: 4%;
+    display: flex;
+    flex-direction: column;
 }
 
-.homePageContentContainer{
+.userinfoPageContentContainer{
     /* position: relative; */
     display: flex;
     flex-direction: row;

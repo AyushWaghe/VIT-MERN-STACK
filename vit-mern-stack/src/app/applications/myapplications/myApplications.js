@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Header from "../../components/layout/Header";
 import Table4 from "../../components/table4/page.js";
 import "./myApplication.css";
@@ -7,8 +8,9 @@ export default function MyApplications() {
     const [projectNames, setProjectNames] = useState([]);
     const [applications, setApplications] = useState([]);
     const [combinedData, setCombinedData] = useState([]);
-
-    const applierID = "65fa7c74728a432218764830";
+    const user=useSelector((state)=>state.user);
+    const applierID = user.user.userID;
+    console.log(applierID);
 
     // Function to fetch project names based on project IDs
     const fetchProjectNames = async (projectIDs) => {
@@ -99,14 +101,14 @@ export default function MyApplications() {
 
                     <div className="ApplicationsTable">
                         <Table4
-                        tableTitle={"My Applications"}
+                        tableTitle={"Applications"}
                         header1={"Project ID"}
                         header2={"Project Name"}
                         header3={"Status"}
                         data={applications}
                         id1={"projectID"}
                         id2={"projectName"}
-                        //id3={"number"}
+                        id3={"number"}
                     />
                     </div>
                 </div>

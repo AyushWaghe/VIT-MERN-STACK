@@ -1,11 +1,16 @@
 "use client"
-import MyApplications from "./myApplications";
+
+import ReduxProvider from "../../../store/redux-provider.js";
+import MyApplications from "./myApplications.js";
 
 
 export default function loginPag() {
     return (
         <div>
-            <MyApplications />
+            <ReduxProvider>
+                <MyApplications />
+            </ReduxProvider>
+
         </div>
     )
 }

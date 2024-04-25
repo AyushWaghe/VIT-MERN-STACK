@@ -1,4 +1,3 @@
-// pages/api/createProject.js
 import { NextResponse } from "next/server";
 import { connectDB } from '../../../../dbConfig/db.js';
 import { OngoingProject } from '../../../../models/projectSchema.js';
@@ -17,23 +16,30 @@ export { generateRandomID };
 export async function POST(request, response) {
     console.log("Request received to create project.");
     const reqBody = await request.json();
-    const { projectName,description, category, projectDomain,requirments} = reqBody; // Added description here
+    const { projectName, description, category, projectDomain, requirements, userID } = reqBody; // Changed requirments to requirements and added userID
     try {
+        // Check if the project name already exists for the given user ID
+        const existingProject = await OngoingProject.findOne({ projectName: projectName, creatorID: userID });
+        if (existingProject) {
+            return NextResponse.json({ message: 'Project name already exists for this user' });
+        }
+
         // Generate random ID
         const randomID = await generateRandomID();
         console.log(`Generated Random ID: ${randomID}`);
         const projectID = randomID;
         const completedStatus = 0;
-        const teammates=null;
+        const teammates = null;
         const projectData = {
             projectID: projectID,
             projectName: projectName,
-            description:description,
+            description: description,
             category: category,
             projectDomain: projectDomain,
-            requirments:requirments,
+            requirements: requirements,
             completedStatus: completedStatus,
             teammates: teammates,
+            creatorID: userID // Added creatorID to the project data
         }
 
         // Insert project data into 'projects' collection

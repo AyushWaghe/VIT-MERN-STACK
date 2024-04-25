@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react";
-import './page.css';
 import Header from "../components/layout/Header";
+import './page.css';
 
 export default function HostProject() {
     const [projectTitle, setProjectTitle] = useState("");
@@ -27,15 +27,40 @@ export default function HostProject() {
         setTeamDetails(newDetails);
     };
 
-    const handleHostProject = () => {
-        // Implement your logic to handle hosting the project here
-        console.log("Project Title:", projectTitle);
-        console.log("Description:", description);
-        console.log("Project Category:", projectCategory);
-        console.log("Project Domain:", projectDomain);
-        console.log("Team Details:", teamDetails);
-    };
+    const handleHostProject = async () => {
+        try {
+            // Construct the request body
+            const requestBody = {
+                projectName: projectTitle,
+                description: description,
+                category: projectCategory,
+                projectDomain: projectDomain,
+                teamDetails: teamDetails
+            };
 
+            // Send the data to the given API endpoint
+            const response = await fetch('/api/projects/createProject', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            // Check if the request was successful
+            if (!response.ok) {
+                throw new Error("Failed to host project");
+            }
+
+            // Handle the response
+            const responseData = await response.json();
+            console.log("Project hosted successfully:", responseData);
+            // You can perform further actions based on the response if needed
+        } catch (error) {
+            console.error("Error hosting project:", error);
+            // Handle error appropriately, e.g., show an error message to the user
+        }
+    };
     return (
         <div className="hostProjectMasterContainer">
 

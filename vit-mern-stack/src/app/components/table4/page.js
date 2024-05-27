@@ -1,6 +1,5 @@
-import React from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 import "./table4.css";
 
 const Table4 = ({ tableTitle, header1, header2, header3, data, id1, id2, id3}) => {

@@ -1,7 +1,7 @@
 // pages/api/users.js
+import { NextResponse } from "next/server";
 import { connectDB } from '../../../../dbConfig/db.js';
 import UserProfile from '../../../../models/userProfileSchema.js';
-import { NextResponse } from "next/server";
 connectDB();
 
 export async function POST(request) {
@@ -16,7 +16,7 @@ export async function POST(request) {
 
       if (userName) {
         const regexPattern = new RegExp(`${userName.split('').join('.*')}`, 'i'); 
-        query.userName = regexPattern;
+        query.name = regexPattern;
       } else {
 
         if (degree!='') query.degree = degree;

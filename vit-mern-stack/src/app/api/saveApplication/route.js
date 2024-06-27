@@ -1,20 +1,29 @@
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 import { connectDB } from '../../../dbConfig/db.js';
 import Application from "../../../models/applicationSchema.js"; // Import the Application model
 import { OngoingProject } from '../../../models/projectSchema.js';
+
 await connectDB(); // Connect to the database
 
 export async function POST(request) {
-    console.log("Route hit");
-
     try {
-        const reqBody = await request.json();
-        const { applyFor, coverLetter, applierID, projectId} = reqBody; // Fix request object reference
+        const session = await getServerSession({ req: request.req });
 
+        if (!session) {
+            return NextResponse.error(new Error('Unauthorized'));
+        }
+
+        const reqBody = await request.json();
+        const { applyFor, coverLetter, projectId } = reqBody;
+
+        // Fetch the project details to get creatorID
         const project = await OngoingProject.findOne({ projectID: projectId });
-        console.log("Project", project);
+        if (!project) {
+            return NextResponse.error(new Error('Project not found'));
+        }
+
         const creatorID = project.creatorID;
-        console.log("Creator", creatorID);
 
         // Check if an application with the given role, project ID, and creator ID already exists
         const existingApplication = await Application.findOne({
@@ -32,22 +41,22 @@ export async function POST(request) {
         // Create a new application instance using the Application model
         const newApplication = new Application({
             projectID: projectId,
-            applierID: applierID,
+            applierID: session.user.id, // Assuming session.user.id contains the applier's ID
             creatorID: creatorID,
-            role: applyFor, 
+            role: applyFor,
             coverLetter: coverLetter,
         });
 
         const savedApplication = await newApplication.save();
         console.log("Application saved:", savedApplication);
 
-        return NextResponse.json({ 
-            success: true, 
+        return NextResponse.json({
+            success: true,
             message: "Application saved successfully",
             isSaved: true // Indicate that the application is saved
         });
     } catch (error) {
-        console.error(error); // Log error for debugging
+        console.error('Error saving application:', error);
         return NextResponse.error(new Error('Internal Server Error')); // Return error response
     }
 }

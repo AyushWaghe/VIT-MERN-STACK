@@ -1,16 +1,20 @@
-import { connectDB } from "../../../../dbConfig/db";
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
+import { connectDB } from "../../../../dbConfig/db";
 import Application from "../../../../models/applicationSchema.js";
 
 await connectDB();
 
 export async function POST(request) {
-    console.log("Application route hit");
-
     try {
+        const session = await getServerSession({ req: request.req });
+
+        if (!session) {
+            return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+        }
+
         const reqBody = await request.json();
         const { creatorID } = reqBody;
-        console.log(creatorID);
 
         // Find all applications with the given creatorID
         const applications = await Application.find({ creatorID });
@@ -18,7 +22,7 @@ export async function POST(request) {
         // Group applications by projectID
         const groupedApplications = {};
         applications.forEach((app) => {
-            if (!groupedApplications[app.projectID]) {  //This lines checks if the projectID is there in the gourped array or not 
+            if (!groupedApplications[app.projectID]) {
                 groupedApplications[app.projectID] = [];
             }
             groupedApplications[app.projectID].push({
@@ -28,9 +32,7 @@ export async function POST(request) {
             });
         });
 
-        console.log(groupedApplications);
-
-        // Format the data as to be sent to the front end
+        // Format the data to be sent to the front end
         const formattedData = [];
         for (const projectID in groupedApplications) {
             formattedData.push({

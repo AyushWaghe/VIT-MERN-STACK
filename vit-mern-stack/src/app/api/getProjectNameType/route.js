@@ -1,6 +1,6 @@
-import { connectDB } from "../../../dbConfig/db.js";
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
-// import Application from "../../../../models/applicationSchema.js";
+import { connectDB } from "../../../dbConfig/db.js";
 import { OngoingProject } from "../../../models/projectSchema";
 
 await connectDB();
@@ -9,27 +9,29 @@ export async function POST(request) {
     console.log("Getting name and type");
 
     try {
+        const session = await getServerSession({ req: request.req });
+
+        if (!session) {
+            return NextResponse.error(new Error('Unauthorized'));
+        }
+
         const reqBody = await request.json();
         const { projectIDs } = reqBody;
         console.log(projectIDs);
 
-        // Find all applications with the given creatorID
+        // Find all projects with the given projectIDs
         const projects = await OngoingProject.find({ projectID: { $in: projectIDs } });
 
-        const data=[];
+        const data = projects.map((project) => ({
+            projectName: project.projectName,
+            // categoryName: project.categoryName, // Uncomment if needed
+        }));
 
-        console.log(projects);
-        // console.log(projects[1].categoryName);
-        projects.forEach((project) => {
-            data.push({
-                projectName:project.projectName,
-                // categoryName:project.categoryName,
-            })
-        });
+        console.log("Fetched Projects:", data);
 
-        return NextResponse.json({ success: true, data: data }, { status: 200 });
+        return NextResponse.json({ success: true, data }, { status: 200 });
     } catch (error) {
-        console.error("Error fetching applications:", error);
-        return NextResponse.json({ success: false, error: "Failed to fetch applications" }, { status: 500 });
+        console.error("Error fetching projects:", error);
+        return NextResponse.json({ success: false, error: "Failed to fetch projects" }, { status: 500 });
     }
 }

@@ -1,10 +1,11 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from "react";
 import Header from "../components/layout/Header";
-import { useSearchParams } from 'next/navigation'
-import "./exploreApplication.css";
 import Table2 from "../components/table2/page";
 import Table4 from "../components/table4/page";
+import "./exploreApplication.css";
 
 export default function explorApplication() {
 
@@ -17,6 +18,7 @@ export default function explorApplication() {
     const [projectsData, setProjectsData] = useState([]);
     const [applicantsNames, setApplicantsNames] = useState([]);
     const [tableData, setTableData] = useState([{}]);
+    const {data:session,status}=useSession();
     // const tableData={};
 
     const fetchNames = async () => {
@@ -73,71 +75,77 @@ export default function explorApplication() {
     });
     
     console.log(combinedArray);
+    if(session){
+        return (
+            <div className="exploreApplicationMasterContainer">
+                <div className="HeaderContainer">
+                    <Header />
+                </div>
     
-
-
-    return (
-        <div className="exploreApplicationMasterContainer">
-            <div className="HeaderContainer">
-                <Header />
-            </div>
-
-            <div className="exploreApplicationContentContainer">
-                <div className="navBar">
-                    Bar
-                </div>
-
-                <div className="ContentContainer">
-                    <div className="DivHeader">
-                        Project Details
+                <div className="exploreApplicationContentContainer">
+                    <div className="navBar">
+                        Bar
                     </div>
-                    <div className="ProjectFields">
-                        <div className="Field">
-                            <div>
-                                Project Category-:
+    
+                    <div className="ContentContainer">
+                        <div className="DivHeader">
+                            Project Details
+                        </div>
+                        <div className="ProjectFields">
+                            <div className="Field">
+                                <div>
+                                    Project Category-:
+                                </div>
+    
+                                <div className="input">
+                                    {projectsData.domainName}
+                                </div>
                             </div>
-
-                            <div className="input">
-                                {projectsData.domainName}
+                            <div className="Field">
+                                <div>
+                                    Project Category-:
+                                </div>
+    
+                                <div className="input">
+                                    {projectsData.categoryName}
+                                </div>
                             </div>
                         </div>
-                        <div className="Field">
-                            <div>
-                                Project Category-:
-                            </div>
-
-                            <div className="input">
-                                {projectsData.categoryName}
-                            </div>
+                        <div style={{ "textAlign": "center" }}>
+                            <h2>Current Team</h2>
+                            <Table2
+                                header1={"Name"}
+                                header2={"Role"}
+                                id1={"name"}
+                                id2={"role"}
+                                data={projectsData.teammates}
+                            />
                         </div>
+    
+                        <div style={{ "textAlign": "center" }}>
+                            <h2>Applications</h2>
+                            <Table4
+                                tableTitle={"Applicants"}
+                                header1={"Name"}
+                                header2={"Role"}
+                                header3={""}
+                                id1={"Name"}
+                                id2={"Roles"}
+                                id3={""}
+                                data={combinedArray}
+                            />
+                        </div>
+    
                     </div>
-                    <div style={{ "textAlign": "center" }}>
-                        <h2>Current Team</h2>
-                        <Table2
-                            header1={"Name"}
-                            header2={"Role"}
-                            id1={"name"}
-                            id2={"role"}
-                            data={projectsData.teammates}
-                        />
-                    </div>
-
-                    <div style={{ "textAlign": "center" }}>
-                        <h2>Applications</h2>
-                        <Table4
-                            tableTitle={"Applicants"}
-                            header1={"Name"}
-                            header2={"Role"}
-                            header3={""}
-                            id1={"Name"}
-                            id2={"Roles"}
-                            id3={""}
-                            data={combinedArray}
-                        />
-                    </div>
-
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
+    else{
+        return(
+            <div>
+                Please Login to Continue
+            </div>
+        )
+    }
 }

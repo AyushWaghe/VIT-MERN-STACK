@@ -1,4 +1,5 @@
 "use client"
+import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import Header from "../components/layout/Header";
 import './page.css';
@@ -9,6 +10,8 @@ export default function HostProject() {
     const [projectCategory, setProjectCategory] = useState("");
     const [projectDomain, setProjectDomain] = useState("");
     const [teamDetails, setTeamDetails] = useState([{ label: "", skills: "" }]);
+    const { data: session, status } = useSession();
+    const creatorID = session?.user?.id;
 
     const handleAddRow = () => {
         setTeamDetails([...teamDetails, { label: "", skills: "" }]);
@@ -29,16 +32,16 @@ export default function HostProject() {
 
     const handleHostProject = async () => {
         try {
-            // Construct the request body
             const requestBody = {
+                creatorID: creatorID,
                 projectName: projectTitle,
                 description: description,
                 category: projectCategory,
                 projectDomain: projectDomain,
-                teamDetails: teamDetails
+                teamDetails: teamDetails,
+                creatorID: creatorID  // Use session ID as creator ID
             };
 
-            // Send the data to the given API endpoint
             const response = await fetch('/api/projects/createProject', {
                 method: "POST",
                 headers: {
@@ -47,20 +50,32 @@ export default function HostProject() {
                 body: JSON.stringify(requestBody)
             });
 
-            // Check if the request was successful
             if (!response.ok) {
                 throw new Error("Failed to host project");
             }
 
-            // Handle the response
             const responseData = await response.json();
             console.log("Project hosted successfully:", responseData);
-            // You can perform further actions based on the response if needed
+            console.log(requestBody)
+            // Handle success message or further actions based on response
         } catch (error) {
             console.error("Error hosting project:", error);
             // Handle error appropriately, e.g., show an error message to the user
         }
     };
+
+    if (status === 'loading') {
+        return <div>Loading...</div>;
+    }
+
+    if (!session) {
+        return (
+            <div>
+                Please Login to Continue
+            </div>
+        );
+    }
+
     return (
         <div className="hostProjectMasterContainer">
 
@@ -183,6 +198,5 @@ export default function HostProject() {
                 </div>
             </div>
         </div>
-
-    )
+    );
 }

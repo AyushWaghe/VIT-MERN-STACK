@@ -1,45 +1,48 @@
-// pages/api/users.js
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 import { connectDB } from '../../../../dbConfig/db.js';
 import UserProfile from '../../../../models/userProfileSchema.js';
+
 connectDB();
 
 export async function POST(request) {
-    console.log("hit hit ");
+    console.log("API endpoint hit");
+
     try {
-        const reqBody = await request.json()
-      const { userName, skills, degree, branch} = reqBody;
-      console.log("userName: " + branch);
+        const session = await getServerSession({ req: request.req });
 
-      const query = {};
+        if (!session) {
+            return NextResponse.error(new Error('Unauthorized'));
+        }
 
+        const reqBody = await request.json();
+        const { userName, skills, degree, branch } = reqBody;
+        console.log("Request Body:", reqBody);
 
-      if (userName) {
-        const regexPattern = new RegExp(`${userName.split('').join('.*')}`, 'i'); 
-        query.name = regexPattern;
-      } else {
+        // Construct the query based on incoming parameters
+        const query = {};
 
-        if (degree!='') query.degree = degree;
-        if (branch!='') query.branch = branch;
-        if (skills[0]!='') query.skills = { $in: skills}; // Split skills string into an array
-      }
+        // If userName is provided, perform a case-insensitive regex search on name field
+        if (userName) {
+            const regexPattern = new RegExp(`${userName}`, 'i');
+            query.name = regexPattern;
+        }
 
-      console.log(query);
+        // Add additional criteria based on other parameters
+        if (degree !== '') query.degree = degree;
+        if (branch !== '') query.branch = branch;
+        if (skills.length > 0) query.skills = { $in: skills };
 
+        console.log("Query:", query);
 
-      let users = [];
-      if (Object.keys(query).length !== 0) {
-        users = await UserProfile.find(query);
-      } else {
+        // Execute the query to find matching users
+        let users = await UserProfile.find(query);
 
-        users = await UserProfile.find();
-      }
+        console.log("Found Users:", users);
 
-      console.log(users);
-
-      return NextResponse.json({ success:true,users }, { status:200  })
+        return NextResponse.json({ success: true, users }, { status: 200 });
     } catch (error) {
-        
-        return NextResponse.json({ success:false}, { status:200  })
+        console.error('Error fetching users:', error);
+        return NextResponse.error(new Error('Failed to fetch users'));
     }
 }

@@ -1,12 +1,12 @@
 // pages/_app.js
-import { Provider } from 'react-redux';
-import { store } from '../store'; // Adjust the path as per your project structure
+import { SessionProvider } from 'next-auth/react';
+import '../styles/globals.css';
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <Provider store={store}>
+    <SessionProvider session={session}>
       <Component {...pageProps} />
-    </Provider>
+    </SessionProvider>
   );
 }
 

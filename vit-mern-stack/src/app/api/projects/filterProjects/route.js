@@ -1,57 +1,49 @@
-// pages/api/projects.js
-import { connectDB } from '../../../../dbConfig/db.js';
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
-import { OngoingProject }  from '../../../../models/projectSchema.js';
+import { connectDB } from '../../../../dbConfig/db.js';
+import { OngoingProject } from '../../../../models/projectSchema.js';
 
 await connectDB(); // Connect to the database
 
 export async function POST(request) {
-    console.log("Route hit");
-    // console.log(req.body);
     try {
-        // const {projectID} =req.body.projectID;
-        const reqBody=await request.json();
-        const { projectID,projectName, categoryName, domainName } = reqBody; // Fix request object reference
-        console.log(categoryName);
+        const session = await getServerSession({ req: request.req });
+
+        if (!session) {
+            return NextResponse.error(new Error('Unauthorized'));
+        }
+
+        const reqBody = await request.json();
+        const { projectID, projectName, categoryName, domainName } = reqBody;
+
         // Construct the query based on incoming parameters
         const query = {};
 
-        // If projectName is provided, perform a combination of text search and regex matching
-        if(projectID){
-          query.projectID=projectID;
-        }
-        else if (projectName) {
-            const regexPattern = new RegExp(`${projectName.split('').join('.*')}`, 'i'); 
+        if (projectID) {
+            query.projectID = projectID;
+        } else if (projectName) {
+            const regexPattern = new RegExp(`${projectName.split('').join('.*')}`, 'i');
             query.projectName = regexPattern;
         } else {
-       
-            if (categoryName[0]!='') query.categoryName = { $in: categoryName };
-            if (domainName[0] !='') query.domainName = { $in: domainName};
+            if (categoryName.length > 0) query.categoryName = { $in: categoryName };
+            if (domainName.length > 0) query.domainName = { $in: domainName };
         }
 
-        
+        console.log("Query:", query);
+
+        // Execute the query to find matching projects
         let projects = [];
-        console.log("query",query);
         if (Object.keys(query).length !== 0) {
-            projects = await OngoingProject.find(query); 
+            projects = await OngoingProject.find(query);
         } else {
-       
             projects = await OngoingProject.find();
         }
 
-        console.log(projects);
+        console.log("Projects found:", projects);
 
-        return NextResponse.json(projects); // Fix response object reference
+        return NextResponse.json(projects);
     } catch (error) {
-        console.error(error); // Log error for debugging
-        return NextResponse.error(new Error('Internal Server Error')); // Return error response
+        console.error('Error fetching projects:', error);
+        return NextResponse.error(new Error('Internal Server Error'));
     }
 }
-
-
-// export async function POST(request){
-//     const reqBody=await request.json();
-//     const {projectID}=reqBody;
-//     console.log(projectID);
-//     return new Response("GET handler");
-// }

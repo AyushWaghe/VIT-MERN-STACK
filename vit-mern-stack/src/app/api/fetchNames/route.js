@@ -1,14 +1,21 @@
-// pages/api/users.js
+import { getServerSession } from "next-auth/next";
+import { NextResponse } from "next/server";
 import { connectDB } from "../../../dbConfig/db.js";
 import UserProfile from "../../../models/userProfileSchema.js";
-import { NextResponse } from "next/server";
+
 await connectDB();
 
 export async function POST(request) {
     try {
-        console.log("FetchingNames");
-        const { applicationIDs } = await request.json(); 
-        
+        const session = await getServerSession({ req: request.req });
+
+        if (!session) {
+            return NextResponse.error(new Error('Unauthorized'));
+        }
+
+        console.log("Fetching Names");
+        const { applicationIDs } = await request.json();
+
         if (!Array.isArray(applicationIDs)) {
             return NextResponse.error(new Error('Invalid application IDs format.'));
         }
@@ -18,9 +25,9 @@ export async function POST(request) {
             return userProfile ? userProfile.name : null;
         }));
 
-        console.log(userNames);
+        console.log("User Names:", userNames);
 
-        return NextResponse.json({ userNames:userNames });
+        return NextResponse.json({ userNames });
     } catch (error) {
         console.error('Error fetching user names:', error);
         return NextResponse.error(new Error('Failed to fetch user names.'));

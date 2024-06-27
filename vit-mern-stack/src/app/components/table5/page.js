@@ -4,15 +4,17 @@ import "./table5.css";
 
 const Table5 = ({ tableTitle, header1, header2, header3, header4, data, id1, id2, id3, id4 }) => {
     const router = useRouter();
+
     const handleExploreClick = (projectId) => {
+        console.log('Navigating to:', projectId); // Log project ID for debugging
+
         if (tableTitle === "On Going Projects") {
             // Navigating to explore page with project ID as query parameter
             router.push(`/myProjects/explore?projectId=${projectId}&status=0&teammates=1`);
-        }else if(tableTitle === "Projects"){
+        } else if (tableTitle === "Projects") {
             router.push(`/discoverProjects/exploreDiscovProject?projectId=${projectId}&status=0&teammates=0`);
-        }
-        else if(tableTitle==="Complted Projects"){
-            router.push(`/myProjects/explore?projectId=${projectId}&status=1&teammates=1`)
+        } else if (tableTitle === "Completed Projects") {
+            router.push(`/myProjects/explore?projectId=${projectId}&status=1&teammates=1`);
         }
     }
 
@@ -33,7 +35,7 @@ const Table5 = ({ tableTitle, header1, header2, header3, header4, data, id1, id2
                     <tbody>
                         {data.length === 0 ? (
                             <tr>
-                                <td colSpan="5">No Table5 projects to display</td>
+                                <td colSpan="5">No projects to display</td>
                             </tr>
                         ) : (
                             data.map((d, index) => (
@@ -42,7 +44,6 @@ const Table5 = ({ tableTitle, header1, header2, header3, header4, data, id1, id2
                                     <td>{d[id2]}</td>
                                     <td>{d[id3]}</td>
                                     <td>{d[id4]}</td>
-                                    {/* Use the Link component inside the button */}
                                     <td><button onClick={() => handleExploreClick(d.projectID)}>Explore</button></td>
                                 </tr>
                             ))

@@ -30,7 +30,10 @@ const userProfileSchema = new mongoose.Schema({
     },
     ongoingProjects:{
         type:[Number]
-    }
+    },
+    skills:{
+        type:[String]
+    },
     
 });
 

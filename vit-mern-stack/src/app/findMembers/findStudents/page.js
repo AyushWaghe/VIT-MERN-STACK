@@ -17,7 +17,7 @@ const findStudents = () => {
         try {
             const response = await fetch('/api/findmembers/student', {
                 method: 'POST',
-                body: JSON.stringify({ userName, skills:[skills], degree, branch}),
+                body: JSON.stringify({ userName, skills, degree, branch}),
                 headers: {
                     'Content-Type': 'application/json',
                 }
